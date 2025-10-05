@@ -1,0 +1,11 @@
+[package]
+org = "dsa"
+name = "ticketing_service"
+version = "0.1.0"
+
+[build-options]
+observabilityIncluded = false
+
+[dependencies]
+"ballerinax/postgresql" = { version = "1.8.0" }
+"ballerinax/kafka" = { version = "3.6.0" }
