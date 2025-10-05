@@ -1,4 +1,4 @@
-# Smart Public Transport Ticketing — Minimal MVP (Ballerina)
+# Smart Public Transport Ticketing 
 
 Services:
 - Passenger (8081): register, list my tickets
