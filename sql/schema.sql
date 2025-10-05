@@ -1,0 +1,38 @@
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS routes (
+  id SERIAL PRIMARY KEY,
+  code TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS trips (
+  id SERIAL PRIMARY KEY,
+  route_id INT NOT NULL REFERENCES routes(id) ON DELETE CASCADE,
+  departure TIMESTAMP NOT NULL,
+  vehicle TEXT NOT NULL
+);
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ticket_status') THEN
+    CREATE TYPE ticket_status AS ENUM ('CREATED','PAID','VALIDATED','EXPIRED');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ticket_type') THEN
+    CREATE TYPE ticket_type AS ENUM ('SINGLE','MULTI','PASS');
+  END IF;
+END$$;
+
+CREATE TABLE IF NOT EXISTS tickets (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  trip_id INT NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+  type ticket_type NOT NULL,
+  status ticket_status NOT NULL DEFAULT 'CREATED',
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
