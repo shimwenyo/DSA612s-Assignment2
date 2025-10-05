@@ -1,1 +1,11 @@
+[package]
+org = "dsa"
+name = "passenger_service"
+version = "0.1.0"
+
+[build-options]
+observabilityIncluded = false
+
+[dependencies]
+"ballerinax/postgresql" = { version = "1.8.0" }
 
